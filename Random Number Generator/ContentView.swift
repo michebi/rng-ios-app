@@ -102,25 +102,7 @@ struct ContentView: View {
                 }
                 .padding(16.0)
                 .navigationTitle("")
-                
-                // The tool bar above the app
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: { isDark.toggle() }) {
-                            if isDark {
-                                Label("Dark", systemImage: "sun.max.fill")
-                                    .font(.title)
-                                    .foregroundColor(Color("primary_DarkMode"))
-                            } else {
-                                Label("Light", systemImage: "moon.fill")
-                                    .font(.title)
-                                    .foregroundColor(Color("primary_DarkMode"))
-                            }
-                        }
-                    }
-                }
             }
-            .environment(\.colorScheme, isDark ? .dark : .light)
         }
     }
     
