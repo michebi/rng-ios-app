@@ -8,10 +8,14 @@
 import SwiftUI
 
 @main
+
 struct Random_Number_GeneratorApp: App {
+    
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
 }
