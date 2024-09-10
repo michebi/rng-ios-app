@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 
 struct Random_Number_GeneratorApp: App {
@@ -14,8 +15,12 @@ struct Random_Number_GeneratorApp: App {
     @AppStorage("isDarkMode") var isDarkMode: Bool = false
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .preferredColorScheme(isDarkMode ? .dark : .light)
+            if #available(iOS 15.0, *) {
+                ContentView()
+                    .preferredColorScheme(isDarkMode ? .dark : .light)
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
 }

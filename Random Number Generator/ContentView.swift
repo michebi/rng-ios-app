@@ -1,120 +1,71 @@
 //
 //  ContentView.swift
-//  Random Number Generator
+//  Layout
 //
-//  Created by Michael Ebimomi on 09/02/2023.
+//  Created by Michael Ebimomi on 22/06/2023.
 //
 
 import SwiftUI
 
 struct ContentView: View {
-    @State var minTextField: String = ""
-    @State var maxTextField: String = ""
-    @State var randomInt = Int.random(in: 0...0)
-    @State private var minimumValue: String = ""
-    @State private var maximumValue: String = ""
-    @State private var generatedValue: Int?
-    
-    // Saves the dark mode theme for the user
-    @AppStorage("IsDarkMode") private var isDark = false
+    @StateObject private var numberGenerator = RandomNumberGenerator()
+    @State private var minValue: Int = 1
+    @State private var maxValue: Int = 100
+    @FocusState private var isInputActive: Bool
+    @State private var showToast = false
+    @State private var toastStyle: ToastStyle = .neutral
+    @State private var toastMessage = ""
     
     var body: some View {
-        
-        NavigationView {
-            
-            ZStack {
-                Color("primary_LightMode")
-                    .edgesIgnoringSafeArea(.all)
-                
+        ZStack(alignment: .top) {
+            GeometryReader { geometry in
                 VStack {
-                    // This is the generated number text
-                    Text("\(randomInt)")
-                        .font(.system(size: 56))
-                        .multilineTextAlignment(.center)
-                        .padding(.top, 120)
-                    
                     Spacer()
-                        .frame(height: 110)
                     
-                    HStack {
-                        VStack(alignment: .center) {
-                            
-                            // Input field to change the RNG values
-                            Text("MIN")
-                                .font(.subheadline)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color("secondary_LightMode"))
-                            TextField("0", text: $minTextField)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.center)
-                                .textFieldStyle(PlainTextFieldStyle())
-                                .font(.system(size: 24))
-                                .onChange(of: minTextField) { newValue in
-                                    if newValue.count > 9 {
-                                        minTextField = String(newValue.prefix(9))
-                                    }
-                                }
+                    VStack(spacing: 56) {
+                        CounterView(value: numberGenerator.randomInt) {
+                            showToast(message: "Copied to clipboard", style: .neutral)
                         }
                         
-                        VStack(alignment: .center) {
-                            
-                            // Input field to change the RNG values
-                            Text("MAX")
-                                .font(.subheadline)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color("secondary_LightMode"))
-                            TextField("0", text: $maxTextField)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.center)
-                                .textFieldStyle(PlainTextFieldStyle())
-                                .font(.system(size: 24))
-                                .onChange(of: maxTextField) { newValue in
-                                    if newValue.count > 9 {
-                                        maxTextField = String(newValue.prefix(9))
-                                    }
-                                }
+                        HStack {
+                            MinMaxField(title: "Min", value: $minValue, isInputActive: _isInputActive)
+                            MinMaxField(title: "Max", value: $maxValue, isInputActive: _isInputActive)
                         }
                     }
+                    .frame(height: geometry.size.height * 0.4)
                     
                     Spacer()
-                        .frame(height: 240)
                     
-                    // Button instance to generate new number
-                    
-                    Button("Generate", action: {
-                        if minTextField.isEmpty || maxTextField.isEmpty {
-                            return
+                    GenerateButton {
+                        numberGenerator.minValue = minValue
+                        numberGenerator.maxValue = maxValue
+                        numberGenerator.generate()
+                        if numberGenerator.randomInt == 0 {
+                            showToast(message: "Generated number is 0!", style: .error)
                         }
-                        let min = Int(minTextField) ?? 0
-                        let max = Int(maxTextField) ?? 100
-                        randomInt = Int.random(in: min...max)
-                    })
-                    .contentShape(RoundedRectangle(cornerRadius: 360))
-                    .fixedSize()
-                    .frame(width: 286, height: 36, alignment: .center)
-                    .frame(maxWidth: .infinity)
-                    .padding(16.0)
-                    .foregroundColor(Color("primary_LightMode"))
-                    .background(Color("primary_DarkMode"))
-                    .cornerRadius(360)
-                    .font(.system(size: 16))
-                    
+                    }
                 }
-                .padding(16.0)
-                .navigationTitle("")
+                .ignoresSafeArea(.keyboard)
+                .padding(16)
             }
+            
+            ToastView(message: toastMessage, style: toastStyle, isPresented: $showToast)
         }
+        .background(Color("primary-bg"))
     }
     
-    
-    
-    
-    
-    
-    
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
+    private func showToast(message: String, style: ToastStyle) {
+        toastMessage = message
+        toastStyle = style
+        showToast = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            showToast = false
         }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
