@@ -11,6 +11,7 @@ enum ToastStyle {
     case success
     case error
     case neutral
+    case warning
 }
 
 struct ToastView: View {
@@ -26,6 +27,8 @@ struct ToastView: View {
             return Color("danger-bg")
         case .neutral:
             return Color("neutral-bg")
+        case .warning:
+            return Color("warning-bg")
         }
     }
     
@@ -37,6 +40,8 @@ struct ToastView: View {
             return Color("danger-text")
         case .neutral:
             return Color("neutral-text")
+        case .warning:
+            return Color("warning-text")
         }
     }
     
@@ -44,7 +49,7 @@ struct ToastView: View {
         switch style {
         case .success, .neutral:
             return "checkmark.circle"
-        case .error:
+        case .error, .warning:
             return "exclamationmark.circle"
         }
     }
@@ -72,12 +77,12 @@ struct ToastView: View {
 }
 
 #Preview {
-    VStack {
+    VStack(spacing: 20) {
         ToastView(message: "Success message!", style: .success, isPresented: .constant(true))
-        Spacer()
         ToastView(message: "Error message!", style: .error, isPresented: .constant(true))
-        Spacer()
         ToastView(message: "Neutral message!", style: .neutral, isPresented: .constant(true))
+        ToastView(message: "Warning message!", style: .warning, isPresented: .constant(true))
     }
-    .background(Color.gray.opacity(0.3))
+    .padding()
+    .background(Color.gray.opacity(0.2))
 }

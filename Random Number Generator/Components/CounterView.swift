@@ -12,7 +12,7 @@ struct CounterView: View {
     @State private var animatedValue: Int = 0
     @State private var isPressed: Bool = false
     @State private var isCopied: Bool = false
-    var onCopy: () -> Void
+    var onCopy: (Bool) -> Void
     
     var body: some View {
         ZStack {
@@ -28,6 +28,7 @@ struct CounterView: View {
                 .contentTransition(.numericText())
                 .multilineTextAlignment(.center)
                 .opacity(animatedValue == 0 ? 0.0 : 1.0)
+                .foregroundColor(Color("primary_DarkMode"))
         }
         .scaleEffect(isPressed && !isCopied ? 0.9 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0), value: isPressed)
@@ -44,7 +45,7 @@ struct CounterView: View {
                         isPressed = true
                         isCopied = false
                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { // Changed to 0.6 seconds
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                             if isPressed {
                                 copyNumber()
                             }
@@ -64,14 +65,22 @@ struct CounterView: View {
     }
     
     private func copyNumber() {
-        UIPasteboard.general.string = String(value)
-        isCopied = true
-        isPressed = false
-        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-        onCopy()
+        do {
+            try UIPasteboard.general.setItems([["public.plain-text": String(value)]], options: [:])
+            isCopied = true
+            isPressed = false
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            onCopy(true)
+        } catch {
+            print("Failed to copy: \(error)")
+            isCopied = false
+            isPressed = false
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+            onCopy(false)
+        }
     }
 }
 
 #Preview {
-    CounterView(value: 42, onCopy: {})
+    CounterView(value: 42, onCopy: { _ in })
 }
