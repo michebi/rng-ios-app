@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct EmptyStateView: View {
+    @ObservedObject var numberGenerator: RandomNumberGenerator
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 8) {
+            Text("empty_history_title", comment: "")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(Color("primary_DarkMode"))
+            
+            Text("empty_history_message", comment: "")
+                .font(.system(size: 14, weight: .regular))
+                .foregroundColor(Color("secondary_DarkMode"))
+                .multilineTextAlignment(.center)
+        }
     }
 }
 
-#Preview {
-    EmptyStateView()
+struct EmptyStateView_Previews: PreviewProvider {
+    static var previews: some View {
+        EmptyStateView(numberGenerator: RandomNumberGenerator())
+    }
 }

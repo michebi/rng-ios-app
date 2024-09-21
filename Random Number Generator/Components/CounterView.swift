@@ -12,6 +12,7 @@ struct CounterView: View {
     @State private var animatedValue: Int = 0
     @State private var isPressed: Bool = false
     @State private var isCopied: Bool = false
+    @AppStorage("selectedNumberFormat") private var selectedNumberFormat: NumberFormat = .comma
     var onCopy: (Bool) -> Void
     
     var body: some View {
@@ -23,7 +24,7 @@ struct CounterView: View {
                 .opacity(animatedValue == 0 ? 1.0 : 0.0)
             
             // Actual value
-            Text("\(animatedValue)")
+            Text(formatNumber(animatedValue, format: selectedNumberFormat))
                 .font(.system(size: 56))
                 .contentTransition(.numericText())
                 .multilineTextAlignment(.center)
@@ -55,7 +56,6 @@ struct CounterView: View {
                 .onEnded { _ in
                     isPressed = false
                     if !isCopied {
-                        // Reset scale if not copied
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0)) {
                             isPressed = false
                         }
@@ -66,7 +66,7 @@ struct CounterView: View {
     
     private func copyNumber() {
         do {
-            try UIPasteboard.general.setItems([["public.plain-text": String(value)]], options: [:])
+            try UIPasteboard.general.setItems([["public.plain-text": formatNumber(value, format: selectedNumberFormat)]], options: [:])
             isCopied = true
             isPressed = false
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
@@ -81,6 +81,8 @@ struct CounterView: View {
     }
 }
 
-#Preview {
-    CounterView(value: 42, onCopy: { _ in })
+struct CounterView_Previews: PreviewProvider {
+    static var previews: some View {
+        CounterView(value: 42, onCopy: { _ in })
+    }
 }

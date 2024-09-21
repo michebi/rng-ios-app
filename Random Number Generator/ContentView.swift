@@ -1,65 +1,93 @@
-//
-//  ContentView.swift
-//  Layout
-//
-//  Created by Michael Ebimomi on 22/06/2023.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedTab = 0
     @StateObject private var numberGenerator = RandomNumberGenerator()
-    @State private var minValue: Int = 1
-    @State private var maxValue: Int = 100
-    @FocusState private var isInputActive: Bool
-    @State private var showToast = false
-    @State private var toastStyle: ToastStyle = .neutral
-    @State private var toastMessage = ""
+    @AppStorage("selectedTheme") private var selectedTheme: AppTheme = .system
+    @AppStorage("selectedLanguage") private var selectedLanguage: CustomAppLanguage = .system
     
     var body: some View {
-        ZStack(alignment: .top) {
-            GeometryReader { geometry in
-                VStack {
-                    Spacer()
-                    
-                    VStack(spacing: 56) {
-                        CounterView(value: numberGenerator.randomInt) {
-                            showToast(message: "Copied to clipboard", style: .neutral)
-                        }
-                        
-                        HStack {
-                            MinMaxField(title: "Min", value: $minValue, isInputActive: _isInputActive)
-                            MinMaxField(title: "Max", value: $maxValue, isInputActive: _isInputActive)
-                        }
-                    }
-                    .frame(height: geometry.size.height * 0.4)
-                    
-                    Spacer()
-                    
-                    GenerateButton {
-                        numberGenerator.minValue = minValue
-                        numberGenerator.maxValue = maxValue
-                        numberGenerator.generate()
-                        if numberGenerator.randomInt == 0 {
-                            showToast(message: "Generated number is 0!", style: .error)
-                        }
-                    }
-                }
-                .ignoresSafeArea(.keyboard)
-                .padding(16)
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selectedTab) {
+                GeneratorView(numberGenerator: numberGenerator)
+                    .tag(0)
+                HistoryView(numberGenerator: numberGenerator)
+                    .tag(1)
+                SettingsView()
+                    .tag(2)
             }
             
-            ToastView(message: toastMessage, style: toastStyle, isPresented: $showToast)
+            CustomTabBar(selectedTab: $selectedTab)
         }
-        .background(Color("primary-bg"))
+        .ignoresSafeArea(edges: .bottom)
+        .preferredColorScheme(colorScheme)
+        .environment(\.locale, Locale(identifier: selectedLanguage == .system ? Locale.current.identifier : selectedLanguage.rawValue))
     }
     
-    private func showToast(message: String, style: ToastStyle) {
-        toastMessage = message
-        toastStyle = style
-        showToast = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            showToast = false
+    private var colorScheme: ColorScheme? {
+        switch selectedTheme {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        case .system:
+            return nil
+        }
+    }
+}
+
+struct CustomTabBar: View {
+    @Binding var selectedTab: Int
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Rectangle()
+                .fill(Color("primary-border"))
+                .frame(height: 1)
+            
+            HStack {
+                TabBarButton(
+                    imageName: "number.circle",
+                    titleKey: "tab_generator",
+                    isSelected: selectedTab == 0,
+                    action: { selectedTab = 0 }
+                )
+                TabBarButton(
+                    imageName: "clock",
+                    titleKey: "tab_history",
+                    isSelected: selectedTab == 1,
+                    action: { selectedTab = 1 }
+                )
+                TabBarButton(
+                    imageName: "gearshape",
+                    titleKey: "tab_settings",
+                    isSelected: selectedTab == 2,
+                    action: { selectedTab = 2 }
+                )
+            }
+            .padding(.top, 8)
+            .padding(.bottom, 20)
+        }
+        .background(Color("primary-bg").ignoresSafeArea(edges: .bottom))
+    }
+}
+
+struct TabBarButton: View {
+    let imageName: String
+    let titleKey: LocalizedStringKey
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: isSelected ? imageName + ".fill" : imageName)
+                    .font(.system(size: 24))
+                Text(titleKey)
+                    .font(.system(size: 12))
+            }
+            .foregroundColor(isSelected ? Color("primary_DarkMode") : Color("secondary_DarkMode"))
+            .frame(maxWidth: .infinity)
         }
     }
 }

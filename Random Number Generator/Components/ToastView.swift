@@ -15,9 +15,21 @@ enum ToastStyle {
 }
 
 struct ToastView: View {
-    let message: String
+    let message: Text
     let style: ToastStyle
     @Binding var isPresented: Bool
+    
+    init(message: String, style: ToastStyle, isPresented: Binding<Bool>) {
+        self.message = Text(message)
+        self.style = style
+        self._isPresented = isPresented
+    }
+    
+    init(message: LocalizedStringKey, style: ToastStyle, isPresented: Binding<Bool>) {
+        self.message = Text(message)
+        self.style = style
+        self._isPresented = isPresented
+    }
     
     private var backgroundColor: Color {
         switch style {
@@ -59,7 +71,7 @@ struct ToastView: View {
             Image(systemName: icon)
                 .foregroundColor(textColor)
             
-            Text(message)
+            message
                 .font(.system(size: 18, weight: .medium))
                 .foregroundColor(textColor)
         }

@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct FeedbackLinkView: View {
+    let url: URL
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Link(destination: url) {
+            HStack {
+                Text("feedback_link_title")
+                    .foregroundColor(Color("primary_DarkMode"))
+                Spacer()
+                Image(systemName: "arrow.up.right")
+                    .foregroundColor(Color("secondary_DarkMode"))
+            }
+            .padding()
+            .background(Color("surface-settings-bg"))
+            .cornerRadius(10)
+        }
     }
 }
 
 #Preview {
-    FeedbackLinkView()
+    FeedbackLinkView(url: URL(string: "https://forms.gle/vjTvJC2haTuTFHjt9")!)
+        .previewLayout(.sizeThatFits)
+        .padding()
 }

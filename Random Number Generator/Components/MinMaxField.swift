@@ -8,22 +8,16 @@
 import SwiftUI
 
 struct MinMaxField: View {
-    let title: String
+    let titleKey: LocalizedStringKey
     @Binding var value: Int
     @FocusState var isInputActive: Bool
+    @AppStorage("selectedNumberFormat") private var selectedNumberFormat: NumberFormat = .comma
     
     @State private var formattedValue: String = ""
     
-    private let numberFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 0
-        return formatter
-    }()
-    
     var body: some View {
         VStack(alignment: .center) {
-            Text(title)
+            Text(titleKey)
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color("secondary_LightMode"))
@@ -34,35 +28,28 @@ struct MinMaxField: View {
                 .textFieldStyle(PlainTextFieldStyle())
                 .font(.system(size: 24))
                 .onChange(of: formattedValue) { newValue in
-                    let filtered = newValue.filter { "0123456789,".contains($0) }
-                    let numericValue = filtered.replacingOccurrences(of: ",", with: "")
-                    
-                    if numericValue.count <= 12 {
-                        if let newIntValue = Int(numericValue) {
-                            value = newIntValue
-                            if let formatted = numberFormatter.string(from: NSNumber(value: newIntValue)) {
-                                formattedValue = formatted
-                            }
-                        } else if filtered.isEmpty {
-                            value = 0
-                            formattedValue = "0"
-                        }
-                    } else {
-                        // If exceeds 12 digits, revert to the previous valid value
-                        formattedValue = numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+                    let filtered = newValue.filter { "0123456789".contains($0) }
+                    if let newIntValue = Int(filtered) {
+                        value = newIntValue
+                        formattedValue = formatNumber(newIntValue, format: selectedNumberFormat)
+                    } else if filtered.isEmpty {
+                        value = 0
+                        formattedValue = "0"
                     }
                 }
                 .onAppear {
-                    formattedValue = numberFormatter.string(from: NSNumber(value: value)) ?? "0"
+                    formattedValue = formatNumber(value, format: selectedNumberFormat)
                 }
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                Button("Done") {
+                Button {
                     isInputActive = false
+                } label: {
+                    Text("done_button")
+                        .font(.system(size: 16, weight: .medium))
                 }
-                .font(.system(size: 16, weight: .medium))
             }
         }
     }
@@ -73,6 +60,6 @@ struct MinMaxField_Previews: PreviewProvider {
     @FocusState static private var isInputActive: Bool
     
     static var previews: some View {
-        MinMaxField(title: "Preview", value: $value, isInputActive: _isInputActive)
+        MinMaxField(titleKey: "Preview", value: $value, isInputActive: _isInputActive)
     }
 }
