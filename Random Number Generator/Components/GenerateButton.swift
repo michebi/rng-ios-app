@@ -31,7 +31,7 @@ struct GenerateButton: View {
                 action()
             }
         }, label: {
-            Text("generate_button", comment: "")
+            Text("generate_button")
                 .fontWeight(.medium)
                 .frame(width: .infinity, height: 64, alignment: .center)
                 .frame(maxWidth: .infinity)

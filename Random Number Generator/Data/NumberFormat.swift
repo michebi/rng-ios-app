@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum NumberFormat: String, CaseIterable, Identifiable {
-    case comma = "Commas"
-    case period = "Period"
-    case space = "Space"
-    case apostrophe = "Apostrophe"
+    case comma = "number_format_commas"
+    case period = "number_format_period"
+    case space = "number_format_space"
+    case apostrophe = "number_format_apostrophe"
     
     var id: String { self.rawValue }
     
@@ -33,6 +34,10 @@ enum NumberFormat: String, CaseIterable, Identifiable {
     
     var example: String {
         self.format(10000)
+    }
+    
+    var localizedKey: LocalizedStringKey {
+        LocalizedStringKey(self.rawValue)
     }
 }
 

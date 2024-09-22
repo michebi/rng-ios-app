@@ -10,7 +10,7 @@ import SwiftUI
 struct HistoryView: View {
     @ObservedObject var numberGenerator: RandomNumberGenerator
     @State private var showingClearConfirmation = false
-    @Environment(\.customAppLanguage) var customAppLanguage
+    @AppStorage("selectedLanguage") private var selectedLanguage: CustomAppLanguage = .system
     
     var body: some View {
         NavigationView {
@@ -35,7 +35,7 @@ struct HistoryView: View {
                 Button(action: {
                     showingClearConfirmation = true
                 }) {
-                    Text("clear_all_button", comment: "")
+                    Text("clear_all_button")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(numberGenerator.history.isEmpty ? Color("primary-disabled") : Color("primary-link"))
                 }
@@ -43,22 +43,21 @@ struct HistoryView: View {
             )
             .alert(isPresented: $showingClearConfirmation) {
                 Alert(
-                    title: Text("clear_confirmation_title", comment: ""),
-                    message: Text("clear_confirmation_message", comment: ""),
-                    primaryButton: .destructive(Text("clear_action", comment: "")) {
+                    title: Text("clear_confirmation_title"),
+                    message: Text("clear_confirmation_message"),
+                    primaryButton: .destructive(Text("clear_action")) {
                         numberGenerator.clearHistory()
                     },
-                    secondaryButton: .cancel(Text("cancel_action", comment: ""))
+                    secondaryButton: .cancel(Text("cancel_action"))
                 )
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .id(customAppLanguage)
+        .languageResponsive()
+        .id(selectedLanguage) // Force view to rebuild when language changes
     }
 }
 
-struct HistoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        HistoryView(numberGenerator: RandomNumberGenerator())
-    }
+#Preview {
+    HistoryView(numberGenerator: RandomNumberGenerator())
 }

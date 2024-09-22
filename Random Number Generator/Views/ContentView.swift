@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct ContentView: View {
     @State private var selectedTab = 0
     @StateObject private var numberGenerator = RandomNumberGenerator()
@@ -93,8 +92,6 @@ struct TabBarButton: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
         ContentView()
     }
-}

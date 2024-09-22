@@ -12,11 +12,11 @@ struct EmptyStateView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            Text("empty_history_title", comment: "")
+            Text("empty_history_title")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundColor(Color("primary_DarkMode"))
             
-            Text("empty_history_message", comment: "")
+            Text("empty_history_message")
                 .font(.system(size: 14, weight: .regular))
                 .foregroundColor(Color("secondary_DarkMode"))
                 .multilineTextAlignment(.center)

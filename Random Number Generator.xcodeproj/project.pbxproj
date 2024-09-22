@@ -11,6 +11,8 @@
 		4C3F8C012C9ED91200B86546 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F8C002C9ED91200B86546 /* WebView.swift */; };
 		4C3F8C052C9ED95F00B86546 /* FeedbackFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F8C042C9ED95F00B86546 /* FeedbackFormView.swift */; };
 		4C3F8C072C9EDDEF00B86546 /* WebFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F8C062C9EDDEF00B86546 /* WebFormView.swift */; };
+		4C3F8C0C2CA050E100B86546 /* LanguageResponsiveModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F8C0B2CA050E100B86546 /* LanguageResponsiveModifier.swift */; };
+		4C3F8C0E2CA0615800B86546 /* NumberFormatBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3F8C0D2CA0615800B86546 /* NumberFormatBottomSheet.swift */; };
 		4C6066732C13B7DF00B897BF /* RandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6066722C13B7DF00B897BF /* RandomNumberGenerator.swift */; };
 		4C6066752C13B7FC00B897BF /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6066742C13B7FC00B897BF /* CounterView.swift */; };
 		4C6066772C13B83000B897BF /* GenerateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6066762C13B83000B897BF /* GenerateButton.swift */; };
@@ -39,6 +41,8 @@
 		4C3F8C002C9ED91200B86546 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		4C3F8C042C9ED95F00B86546 /* FeedbackFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackFormView.swift; sourceTree = "<group>"; };
 		4C3F8C062C9EDDEF00B86546 /* WebFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebFormView.swift; sourceTree = "<group>"; };
+		4C3F8C0B2CA050E100B86546 /* LanguageResponsiveModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageResponsiveModifier.swift; sourceTree = "<group>"; };
+		4C3F8C0D2CA0615800B86546 /* NumberFormatBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatBottomSheet.swift; sourceTree = "<group>"; };
 		4C6066722C13B7DF00B897BF /* RandomNumberGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomNumberGenerator.swift; sourceTree = "<group>"; };
 		4C6066742C13B7FC00B897BF /* CounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterView.swift; sourceTree = "<group>"; };
 		4C6066762C13B83000B897BF /* GenerateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateButton.swift; sourceTree = "<group>"; };
@@ -100,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				4C8147822C9D4C71001C9D27 /* AppLanguage.swift */,
+				4C3F8C0B2CA050E100B86546 /* LanguageResponsiveModifier.swift */,
 				4C8147602C958A74001C9D27 /* NumberFormat.swift */,
 				4C6066722C13B7DF00B897BF /* RandomNumberGenerator.swift */,
 			);
@@ -118,6 +123,7 @@
 				4C8147542C91B422001C9D27 /* EmptyStateView.swift */,
 				4C81475E2C94D72C001C9D27 /* ThemeSelector.swift */,
 				4C8147622C958C27001C9D27 /* BottomSheet.swift */,
+				4C3F8C0D2CA0615800B86546 /* NumberFormatBottomSheet.swift */,
 				4C8147682C958D24001C9D27 /* NumberFormatSettingUI.swift */,
 				4C81477C2C9D3F5E001C9D27 /* LanguageSelector.swift */,
 			);
@@ -242,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C3F8C0E2CA0615800B86546 /* NumberFormatBottomSheet.swift in Sources */,
 				4C81474C2C918BAC001C9D27 /* GeneratorView.swift in Sources */,
 				4C3F8C012C9ED91200B86546 /* WebView.swift in Sources */,
 				4C81477D2C9D3F5E001C9D27 /* LanguageSelector.swift in Sources */,
@@ -258,6 +265,7 @@
 				4C8147502C918BBC001C9D27 /* SettingsView.swift in Sources */,
 				4C81475F2C94D72C001C9D27 /* ThemeSelector.swift in Sources */,
 				4CE2354C29952D39005D13EA /* Random_Number_GeneratorApp.swift in Sources */,
+				4C3F8C0C2CA050E100B86546 /* LanguageResponsiveModifier.swift in Sources */,
 				4C6066792C13B8CB00B897BF /* MinMaxField.swift in Sources */,
 				4C3F8C072C9EDDEF00B86546 /* WebFormView.swift in Sources */,
 				4C81474E2C918BB6001C9D27 /* HistoryView.swift in Sources */,

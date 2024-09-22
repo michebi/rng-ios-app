@@ -27,11 +27,15 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle(Text("settings_title"))
-            .bottomSheet(isPresented: $showingNumberFormatSheet) {
-                NumberFormatSettingUI(selectedFormat: $selectedNumberFormat, isPresented: $showingNumberFormatSheet)
+            .sheet(isPresented: $showingNumberFormatSheet) {
+                NumberFormatBottomSheet(selectedFormat: $selectedNumberFormat, isPresented: $showingNumberFormatSheet)
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
             }
         }
         .preferredColorScheme(colorScheme)
+        .languageResponsive()
+        .id(selectedLanguage) // Force view to rebuild when language changes
     }
     
     private var generalSection: some View {
@@ -40,7 +44,7 @@ struct SettingsView: View {
                 .font(.system(size: 20, weight: .medium))
                 .foregroundColor(Color("primary_DarkMode"))
             
-            VStack(spacing: 16) {
+            VStack(spacing: 0) {
                 Button(action: {
                     showingNumberFormatSheet = true
                 }) {
@@ -48,10 +52,12 @@ struct SettingsView: View {
                         Text("number_format_label")
                             .foregroundColor(Color("primary_DarkMode"))
                         Spacer()
-                        Text(selectedNumberFormat.rawValue)
+                        Text(LocalizedStringKey(selectedNumberFormat.rawValue))
                             .foregroundColor(Color("secondary_DarkMode"))
                     }
-                    .padding()
+                    .padding(.vertical, 20)
+                    .padding(.horizontal, 16)
+
                 }
                 
                 LanguageSelector(selectedLanguage: $selectedLanguage)
@@ -68,12 +74,13 @@ struct SettingsView: View {
                 .font(.system(size: 20, weight: .medium))
                 .foregroundColor(Color("primary_DarkMode"))
             
-            VStack(spacing: 16) {
+            VStack(spacing: 0) {
                 FeedbackLinkView(url: feedbackFormURL, titleKey: "feedback_link_title", iconName: "arrow.up.right")
                 FeedbackLinkView(url: bugReportURL, titleKey: "report_bug_link_title", iconName: "arrow.up.right")
             }
             .background(Color("surface-settings-bg"))
             .cornerRadius(16)
+            
         }
         .padding(.horizontal)
     }
@@ -87,8 +94,7 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
+
+#Preview {
+    SettingsView()
 }
