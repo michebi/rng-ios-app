@@ -6,7 +6,8 @@ struct SettingsView: View {
     @AppStorage("selectedLanguage") private var selectedLanguage: CustomAppLanguage = .system
     @State private var showingNumberFormatSheet = false
     
-    private let feedbackFormURL = URL(string: "https://forms.gle/vjTvJC2haTuTFHjt9")!
+    private let feedbackFormURL = URL(string: "https://forms.gle/9eQohXKThryjPeJs8")!
+    private let bugReportURL = URL(string: "https://forms.gle/NuSpjCvWz9HF4zit6")!
     
     var body: some View {
         NavigationView {
@@ -68,7 +69,8 @@ struct SettingsView: View {
                 .foregroundColor(Color("primary_DarkMode"))
             
             VStack(spacing: 16) {
-                FeedbackLinkView(url: feedbackFormURL)
+                FeedbackLinkView(url: feedbackFormURL, titleKey: "feedback_link_title", iconName: "arrow.up.right")
+                FeedbackLinkView(url: bugReportURL, titleKey: "report_bug_link_title", iconName: "arrow.up.right")
             }
             .background(Color("surface-settings-bg"))
             .cornerRadius(16)

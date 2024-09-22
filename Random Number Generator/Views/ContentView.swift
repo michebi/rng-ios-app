@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct ContentView: View {
     @State private var selectedTab = 0
     @StateObject private var numberGenerator = RandomNumberGenerator()

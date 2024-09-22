@@ -9,25 +9,27 @@ import SwiftUI
 
 struct FeedbackLinkView: View {
     let url: URL
-    
+    let titleKey: LocalizedStringKey
+    let iconName: String
+    @State private var showingWebView = false
+
     var body: some View {
-        Link(destination: url) {
+        Button(action: {
+            showingWebView = true
+        }) {
             HStack {
-                Text("feedback_link_title")
+                Text(titleKey)
                     .foregroundColor(Color("primary_DarkMode"))
                 Spacer()
-                Image(systemName: "arrow.up.right")
+                Image(systemName: iconName)
                     .foregroundColor(Color("secondary_DarkMode"))
             }
             .padding()
             .background(Color("surface-settings-bg"))
             .cornerRadius(10)
         }
+        .sheet(isPresented: $showingWebView) {
+            WebFormView(url: url, titleKey: titleKey)
+        }
     }
-}
-
-#Preview {
-    FeedbackLinkView(url: URL(string: "https://forms.gle/vjTvJC2haTuTFHjt9")!)
-        .previewLayout(.sizeThatFits)
-        .padding()
 }

@@ -9,7 +9,7 @@ struct LanguageSelector: View {
             showingLanguageSheet = true
         }) {
             HStack {
-                Text(NSLocalizedString("language_selection_title", comment: "Language selection title"))
+                Text("language_selection_title")
                     .foregroundColor(Color("primary_DarkMode"))
                 Spacer()
                 Text(selectedLanguage.displayName)
